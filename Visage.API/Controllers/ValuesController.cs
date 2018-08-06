@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Visage.API.Data;
@@ -9,7 +10,8 @@ using Visage.API.Data;
 namespace Visage.API.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Authorize]
+    public class ValuesController : ControllerBase
     {
         private readonly DataContext context;
 
@@ -26,6 +28,7 @@ namespace Visage.API.Controllers
         }
 
         // GET api/values/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetValue(int id)
         {
