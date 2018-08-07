@@ -13,6 +13,7 @@ using Visage.API.Models;
 namespace Visage.API.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository repo;
@@ -24,7 +25,7 @@ namespace Visage.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +45,7 @@ namespace Visage.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto)
+        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var userFromRepo = await repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
 

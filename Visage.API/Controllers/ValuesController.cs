@@ -10,7 +10,6 @@ using Visage.API.Data;
 namespace Visage.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     public class ValuesController : ControllerBase
     {
         private readonly DataContext context;
