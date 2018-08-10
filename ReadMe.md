@@ -1,4 +1,4 @@
-# Project Title
+# Visage
 
 Visage is a chatting application, not that different from Facebook. 
 I've taken an interest in Asp.Net Core and Angular. Thus, decided to try 
@@ -76,7 +76,7 @@ We use Angular6 and ASP.NET Core 2.1
 
 ## Authors
 
-* **Giouzakov Konstantinos** - *Personal Project* - [LinkedIn](linkedin.com/in/giouzakovkostantinos)
+* **Giouzakov Konstantinos** - *Full Stack Developer* - [LinkedIn](https://github.com/Katiaras)
 
 
 ## License
@@ -89,4 +89,5 @@ Licensing Information: GNU General Public License
 * AlertifyJs: is a library providing user friendly messages on the screen - https://alertifyjs.com/
 * ngx-bootstrap: is an angular library allowing to use bootstrap javascript functionalities without depending on Jquery - https://valor-software.com/ngx-bootstrap/
 * Bootswatch: is a bootstrap library providing premade free bootstrap themes - https://bootswatch.com/
+* Sqlite Db Browser: is a high quality, visual, open source tool to create, design, and edit database files compatible with SQLite. - https://sqlitebrowser.org/
 
