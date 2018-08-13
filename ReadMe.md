@@ -88,6 +88,7 @@ Licensing Information: GNU General Public License
 * Angular2-jwt: is a helper library which provides methods to handle JWT authorization features - https://github.com/auth0/angular2-jwt/
 * AlertifyJs: is a library providing user friendly messages on the screen - https://alertifyjs.com/
 * ngx-bootstrap: is an angular library allowing to use bootstrap javascript functionalities without depending on Jquery - https://valor-software.com/ngx-bootstrap/
+* ngx-gallery: is an angular image gallery plugin - https://www.npmjs.com/package/ngx-gallery/
 * Bootswatch: is a bootstrap library providing premade free bootstrap themes - https://bootswatch.com/
 * Sqlite Db Browser: is a high quality, visual, open source tool to create, design, and edit database files compatible with SQLite. - https://sqlitebrowser.org/
 
