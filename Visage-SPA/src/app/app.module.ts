@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
+import { JwtModule } from '@auth0/angular-jwt';
 
 // Components
 import { AppComponent } from './app.component';
@@ -24,6 +25,11 @@ import { AlertifyService } from './services/alertify.service';
 import { appRoutes } from './routes';
 import { AuthGuard } from './guards/auth.guard';
 import { UserService } from './services/user.service';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+
+export function tokenGetter() {
+    return localStorage.getItem('token');
+  }
 
 @NgModule({
    declarations: [
@@ -35,14 +41,22 @@ import { UserService } from './services/user.service';
       SuggestedListComponent,
       MessagesComponent,
       ProfileComponent,
-      MemberCardComponent
+      MemberCardComponent,
+      MemberDetailComponent
    ],
    imports: [
       BrowserModule,
       HttpClientModule,
       FormsModule,
       BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      JwtModule.forRoot({
+          config: {
+              tokenGetter: tokenGetter,
+              whitelistedDomains: ['localhost:5000'],
+              blacklistedRoutes: ['localhost:5000/api/auth']
+          }
+      })
    ],
    providers: [
       AuthService,

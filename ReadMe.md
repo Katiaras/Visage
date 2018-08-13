@@ -76,7 +76,7 @@ We use Angular6 and ASP.NET Core 2.1
 
 ## Authors
 
-* **Giouzakov Konstantinos** - *Full Stack Developer* - [LinkedIn](https://github.com/Katiaras)
+* **Giouzakov Konstantinos** - *Full Stack Developer* - [LinkedIn](https://www.linkedin.com/in/giouzakovkostantinos/)
 
 
 ## License
