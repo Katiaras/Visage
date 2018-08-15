@@ -8,6 +8,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MemberListResolver } from './resolvers/member-list.resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { MemberEditResolver } from './resolvers/member-edit.resolver';
+import { PreventUnsavedChanges } from './guards/prevent-unsaved-changes.guards';
 
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
@@ -18,6 +21,8 @@ export const appRoutes: Routes = [
         children: [
             { path: 'friends', component: MemberListComponent, resolve: {users: MemberListResolver}},
             { path: 'friends/:id', component: MemberDetailComponent, resolve: {user: MemberDetailResolver}},
+            { path: 'user/edit', component: MemberEditComponent,
+             resolve: {user: MemberEditResolver}, canDeactivate: [PreventUnsavedChanges]},
             { path: 'messages', component: MessagesComponent},
             { path: 'suggested', component: SuggestedListComponent},
             { path: 'profile', component: ProfileComponent}

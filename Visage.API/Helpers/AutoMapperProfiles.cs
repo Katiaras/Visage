@@ -23,6 +23,8 @@ namespace Visage.API.Helpers
                 .ForMember(dest => dest.Age, opts => {
                     opts.ResolveUsing(d => d.DateOfBirth.CalculateAge());
                 });
+
+            CreateMap<User, UserForUpdateDto>().ReverseMap();
 ;
             CreateMap<Photo, PhotoForDetailedDto>();
         }
