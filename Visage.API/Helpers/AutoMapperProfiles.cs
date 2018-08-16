@@ -27,6 +27,7 @@ namespace Visage.API.Helpers
             CreateMap<User, UserForUpdateDto>().ReverseMap();
 ;
             CreateMap<Photo, PhotoForDetailedDto>();
+            CreateMap<PhotoForCreationDto, Photo>();
         }
     }
 }
