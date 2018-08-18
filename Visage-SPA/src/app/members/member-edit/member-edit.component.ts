@@ -5,6 +5,7 @@ import { AlertifyService } from '../../services/alertify.service';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { Photo } from '../../models/photo';
 
 @Component({
   selector: 'app-member-edit',
@@ -15,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
   user: User;
+  photoUrl: string;
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification ($event: any) {
     if (this.editForm.dirty) {
@@ -27,6 +29,7 @@ export class MemberEditComponent implements OnInit {
     ngOnInit() {
       this.route.data.subscribe( data => {
         this.user = data['user'];
+        this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
       });
   }
 
@@ -37,5 +40,9 @@ export class MemberEditComponent implements OnInit {
     }, error => {
       this.alertify.error(error);
     });
+  }
+
+  onSetMainPhoto(photo: Photo) {
+    this.user.photoUrl = photo.url;
   }
 }

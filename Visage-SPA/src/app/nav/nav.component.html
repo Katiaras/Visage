@@ -21,6 +21,9 @@
     </ul>
 
     <div class="dropdown" dropdown *ngIf="loggedIn()">
+      <span id="profile-img-navbar">
+        <img class="rounded-circle" src="{{photoUrl}}" >
+      </span>
       <a  class="dropdown-toggle text-light nav-link" dropdownToggle id="dropdownMenuButton">
         Welcome {{authService.decodedToken?.unique_name | titlecase}}
       </a>

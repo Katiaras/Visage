@@ -81,7 +81,7 @@ namespace Visage.API.Controllers
             }
 
             photoForCreationDto.Url = uploadResult.Uri.ToString();
-            photoForCreationDto.PulicId = uploadResult.PublicId;
+            photoForCreationDto.PublicId = uploadResult.PublicId;
 
             var photo = mapper.Map<Photo>(photoForCreationDto);
 
@@ -105,7 +105,7 @@ namespace Visage.API.Controllers
         [HttpPut("{id}/updateMain")]
         public async Task<IActionResult> UpdateMainPhoto(int userId, int id)
         {
-           // Check if the user calling the api is the actual user who's profile is requested to be modified
+            // Check if the user calling the api is the actual user who's profile is requested to be modified
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             {
                 return Unauthorized();
@@ -114,19 +114,76 @@ namespace Visage.API.Controllers
             var user = await repo.GetUser(userId);
 
             // Check if photo exists in the users collection
-            if(!user.Photos.Any(p => p.Id ==id)) {
+            if (!user.Photos.Any(p => p.Id == id))
+            {
                 return Unauthorized();
             }
 
             var photoFromRepo = await repo.GetPhoto(id);
 
-            if(photoFromRepo.IsMain){
+            if (photoFromRepo.IsMain)
+            {
                 return BadRequest("This photo is already the main");
             }
 
             var currentMainPhoto = await repo.GetMainPhotoForUser(userId);
-            // to be continued
+            currentMainPhoto.IsMain = false;
 
+            photoFromRepo.IsMain = true;
+
+            if (await repo.SaveAll())
+            {
+                return NoContent();
+            }
+
+            return BadRequest("Could not set photo to main");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhoto(int userId, int id)
+        {
+            // Check if the user calling the api is the actual user who's profile is requested to be modified
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var user = await repo.GetUser(userId);
+
+            // Check if photo exists in the users collection
+            if (!user.Photos.Any(p => p.Id == id))
+            {
+                return Unauthorized();
+            }
+
+            var photoFromRepo = await repo.GetPhoto(id);
+
+            if (photoFromRepo.IsMain)
+            {
+                return BadRequest("You cannot delete your main photo");
+            }
+
+            if (photoFromRepo.PublicId != null)
+            {
+                var deleteParams = new DeletionParams(photoFromRepo.PublicId);
+                var result = cloudinary.Destroy(deleteParams);
+
+                if (result.Result == "ok")
+                {
+                    repo.Delete(photoFromRepo);
+                }
+            }
+            else
+            {
+                repo.Delete(photoFromRepo);
+            }
+
+            if (await repo.SaveAll())
+            {
+                return NoContent();
+            }
+
+            return BadRequest("Failed to delete the photo");
         }
     }
 }

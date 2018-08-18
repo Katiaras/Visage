@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Visage.API.Models;
@@ -23,16 +24,14 @@ namespace Visage.API.Data
             context.Remove(entity);
         }
 
-<<<<<<< HEAD
         public async Task<Photo> GetMainPhotoForUser(int id)
         {
-            var photo = await context.Photos.FirstOrDefaultAsync(p => p.UserId == id && p.IsMain == true);
+            var photo = await context.Photos.Where(p => p.UserId == id )
+                .FirstOrDefaultAsync(p => p.IsMain == true);
 
             return photo;
         }
 
-=======
->>>>>>> origin/master
         public async Task<Photo> GetPhoto(int id)
         {
             var photo = await context.Photos.FirstOrDefaultAsync(p => p.Id == id);

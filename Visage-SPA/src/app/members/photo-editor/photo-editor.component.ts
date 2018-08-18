@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Photo } from '../../models/photo';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { AlertifyService } from '../../services/alertify.service';
 
 @Component({
   selector: 'app-photo-editor',
@@ -11,12 +13,15 @@ import { AuthService } from '../../services/auth.service';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
+  @Output() setMainPhoto = new EventEmitter<Photo>();
 
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
+  currentMain: Photo;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private userService: UserService,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.initializeUploader();
@@ -27,8 +32,8 @@ export class PhotoEditorComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
 
-  initializeUploader () {
-    this.uploader = new FileUploader ({
+  initializeUploader() {
+    this.uploader = new FileUploader({
       url: this.baseUrl + 'users/' + this.authService.decodedToken.nameid + '/photos',
       authToken: 'Bearer ' + localStorage.getItem('token'),
       isHTML5: true,
@@ -38,7 +43,7 @@ export class PhotoEditorComponent implements OnInit {
       maxFileSize: 10 * 1024 * 1024
     });
 
-    this.uploader.onAfterAddingFile = (file) => {file.withCredentials = false; };
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
@@ -54,6 +59,36 @@ export class PhotoEditorComponent implements OnInit {
         this.photos.push(photo);
       }
     };
+  }
+
+  setAsMain(photo: Photo) {
+    this.userService.updateMainPhoto(+ this.authService.decodedToken.nameid, photo.id)
+      .subscribe(next => {
+        // Set the current main photo to false
+        this.currentMain = this.photos.filter(p => p.isMain === true)[0];
+        this.currentMain.isMain = false;
+
+        // Set the newly selected photo as main
+        photo.isMain = true;
+        this.authService.changeMemberPhoto(photo.url);
+        this.authService.currentUser.photoUrl = photo.url;
+        localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
+        // this.alertify.success('Main photo was successfully updated');
+      }, error => {
+        this.alertify.error(error);
+      });
+  }
+
+  deletePhoto(photoId: number) {
+    this.alertify.confirm('Are you sure you want to delete this photo?', () => {
+      this.userService.deletePhoto(this.authService.decodedToken.nameid, photoId).subscribe(() => {
+        this.photos = this.photos.filter(p => p.id !== photoId);
+        this.alertify.success('Photo was deleted succesfully');
+      }, error => {
+        this.alertify.error(error);
+      });
+    });
+
   }
 
 }
