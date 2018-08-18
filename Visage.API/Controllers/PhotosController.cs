@@ -128,8 +128,5 @@ namespace Visage.API.Controllers
             // to be continued
 
         }
-
-
-
     }
 }

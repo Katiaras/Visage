@@ -23,6 +23,7 @@ namespace Visage.API.Data
             context.Remove(entity);
         }
 
+<<<<<<< HEAD
         public async Task<Photo> GetMainPhotoForUser(int id)
         {
             var photo = await context.Photos.FirstOrDefaultAsync(p => p.UserId == id && p.IsMain == true);
@@ -30,6 +31,8 @@ namespace Visage.API.Data
             return photo;
         }
 
+=======
+>>>>>>> origin/master
         public async Task<Photo> GetPhoto(int id)
         {
             var photo = await context.Photos.FirstOrDefaultAsync(p => p.Id == id);

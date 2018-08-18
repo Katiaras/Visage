@@ -28,7 +28,10 @@ namespace Visage.API.Helpers
 ;
             CreateMap<Photo, PhotoForDetailedDto>();
             CreateMap<PhotoForCreationDto, Photo>();
+<<<<<<< HEAD
             CreateMap<Photo, PhotoForReturnDto>();
+=======
+>>>>>>> origin/master
         }
     }
 }
