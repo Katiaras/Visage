@@ -41,11 +41,12 @@ namespace Visage.API.Controllers
             {
                 return BadRequest("Username already exists");
             }
-
-            var user = new User() { Username = userForRegisterDto.Username };
+            
+            var user = mapper.Map<User>(userForRegisterDto);
             user = await repo.Register(user, userForRegisterDto.Password);
+            var userToReturn = mapper.Map<UserForDetailedDto>(user);
 
-            return StatusCode(201);
+            return CreatedAtRoute("GetUser", new {controller = "Users", id = user.Id}, userToReturn);
         }
 
         [HttpPost("login")]

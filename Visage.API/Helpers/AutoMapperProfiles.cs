@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoMapper;
 using Visage.API.Dtos;
@@ -25,7 +26,7 @@ namespace Visage.API.Helpers
                 });
 
             CreateMap<User, UserForUpdateDto>().ReverseMap();
-;
+            CreateMap<UserForRegisterDto, User>();
             CreateMap<Photo, PhotoForDetailedDto>();
             CreateMap<PhotoForCreationDto, Photo>();
             CreateMap<Photo, PhotoForReturnDto>();

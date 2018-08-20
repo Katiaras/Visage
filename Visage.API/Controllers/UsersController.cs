@@ -29,11 +29,11 @@ namespace Visage.API.Controllers
             var users = await repo.GetUsers();
 
             var usersToReturn = mapper.Map<IEnumerable<UserForListDto>>(users);
- 
+
             return Ok(usersToReturn);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await repo.GetUser(id);
@@ -47,14 +47,16 @@ namespace Visage.API.Controllers
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
         {
             // Check if the user calling the api is the actual user who's profile is requested to be modified
-            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
             }
 
             var userFromRepo = await repo.GetUser(id);
 
             mapper.Map(userForUpdateDto, userFromRepo);
-            if(await repo.SaveAll()){
+            if (await repo.SaveAll())
+            {
                 return NoContent();
             }
 
