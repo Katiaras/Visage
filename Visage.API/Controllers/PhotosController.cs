@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -52,54 +53,63 @@ namespace Visage.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPhotoForUser(int userId, [FromForm] PhotoForCreationDto photoForCreationDto)
         {
-            // Check if the user calling the api is the actual user who's profile is requested to be modified
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            try
             {
-                return Unauthorized();
-            }
-
-            var userFromRepo = await repo.GetUser(userId);
-
-            var file = photoForCreationDto.File;
-
-            var uploadResult = new ImageUploadResult();
-
-            if (file.Length > 0)
-            {
-                using (var stream = file.OpenReadStream())
+                // Check if the user calling the api is the actual user who's profile is requested to be modified
+                if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(file.Name, stream),
-                        Transformation = new Transformation()
-                            .Width(500).Height(500)
-                            .Crop("fill").Gravity("face")
-                    };
-
-                    uploadResult = cloudinary.Upload(uploadParams);
+                    return Unauthorized();
                 }
+
+                var userFromRepo = await repo.GetUser(userId);
+
+                var file = photoForCreationDto.File;
+
+                var uploadResult = new ImageUploadResult();
+
+                if (file.Length > 0)
+                {
+                    using (var stream = file.OpenReadStream())
+                    {
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(file.Name, stream),
+                            Transformation = new Transformation()
+                                .Width(500).Height(500)
+                                .Crop("fill").Gravity("face")
+                        };
+
+                        uploadResult = cloudinary.Upload(uploadParams);
+                    }
+                }
+
+                photoForCreationDto.Url = uploadResult.Uri.ToString();
+                photoForCreationDto.PublicId = uploadResult.PublicId;
+
+                var photo = mapper.Map<Photo>(photoForCreationDto);
+
+                if (!userFromRepo.Photos.Any(f => f.IsMain))
+                {
+                    photo.IsMain = true;
+                }
+
+                userFromRepo.Photos.Add(photo);
+
+
+                if (await repo.SaveAll())
+                {
+                    var photoForReturn = mapper.Map<PhotoForReturnDto>(photo);
+                    return CreatedAtRoute("GetPhoto", new { id = photo.Id }, photoForReturn);
+                }
+
+                return BadRequest("Could not add the photo");
             }
-
-            photoForCreationDto.Url = uploadResult.Uri.ToString();
-            photoForCreationDto.PublicId = uploadResult.PublicId;
-
-            var photo = mapper.Map<Photo>(photoForCreationDto);
-
-            if (!userFromRepo.Photos.Any(f => f.IsMain))
+            catch (Exception ex)
             {
-                photo.IsMain = true;
+                return BadRequest("Could not add the photo");
             }
 
-            userFromRepo.Photos.Add(photo);
 
-
-            if (await repo.SaveAll())
-            {
-                var photoForReturn = mapper.Map<PhotoForReturnDto>(photo);
-                return CreatedAtRoute("GetPhoto", new { id = photo.Id }, photoForReturn);
-            }
-
-            return BadRequest("Could not add the photo");
         }
 
         [HttpPut("{id}/updateMain")]
@@ -142,48 +152,56 @@ namespace Visage.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoto(int userId, int id)
         {
-            // Check if the user calling the api is the actual user who's profile is requested to be modified
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            try
             {
-                return Unauthorized();
-            }
+                // Check if the user calling the api is the actual user who's profile is requested to be modified
+                if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                {
+                    return Unauthorized();
+                }
 
-            var user = await repo.GetUser(userId);
+                var user = await repo.GetUser(userId);
 
-            // Check if photo exists in the users collection
-            if (!user.Photos.Any(p => p.Id == id))
-            {
-                return Unauthorized();
-            }
+                // Check if photo exists in the users collection
+                if (!user.Photos.Any(p => p.Id == id))
+                {
+                    return Unauthorized();
+                }
 
-            var photoFromRepo = await repo.GetPhoto(id);
+                var photoFromRepo = await repo.GetPhoto(id);
 
-            if (photoFromRepo.IsMain)
-            {
-                return BadRequest("You cannot delete your main photo");
-            }
+                if (photoFromRepo.IsMain)
+                {
+                    return BadRequest("You cannot delete your main photo");
+                }
 
-            if (photoFromRepo.PublicId != null)
-            {
-                var deleteParams = new DeletionParams(photoFromRepo.PublicId);
-                var result = cloudinary.Destroy(deleteParams);
+                if (photoFromRepo.PublicId != null)
+                {
+                    var deleteParams = new DeletionParams(photoFromRepo.PublicId);
+                    var result = cloudinary.Destroy(deleteParams);
 
-                if (result.Result == "ok")
+                    if (result.Result == "ok")
+                    {
+                        repo.Delete(photoFromRepo);
+                    }
+                }
+                else
                 {
                     repo.Delete(photoFromRepo);
                 }
-            }
-            else
-            {
-                repo.Delete(photoFromRepo);
-            }
 
-            if (await repo.SaveAll())
-            {
-                return NoContent();
-            }
+                if (await repo.SaveAll())
+                {
+                    return NoContent();
+                }
 
-            return BadRequest("Failed to delete the photo");
+                return BadRequest("Failed to delete the photo");
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Failed to delete the photo");
+            }
         }
     }
 }

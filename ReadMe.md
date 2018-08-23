@@ -90,5 +90,6 @@ Licensing Information: GNU General Public License
 * ngx-bootstrap: is an angular library allowing to use bootstrap javascript functionalities without depending on Jquery - https://valor-software.com/ngx-bootstrap/
 * ngx-gallery: is an angular image gallery plugin - https://www.npmjs.com/package/ngx-gallery/
 * Bootswatch: is a bootstrap library providing premade free bootstrap themes - https://bootswatch.com/
-* Sqlite Db Browser: is a high quality, visual, open source tool to create, design, and edit database files compatible with SQLite. - https://sqlitebrowser.org/
+* Sqlite Db Browser: is a high quality, visual, open source tool to create, design, and edit database files compatible with SQLite - https://sqlitebrowser.org/
+* time-ago-pip: is a really simple, lightweight Angular pipe for converting a date string into a time ago - https://www.npmjs.com/package/time-ago-pipe
 

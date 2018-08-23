@@ -11,3 +11,12 @@
 #dropdownMenuButton {
     display: inline;
 }
+
+
+/* MEDIA QUERIES */
+@media only screen and (max-width: 992px) {
+    .nav-container {
+        padding: 0px;
+        margin: 0px;
+    }
+}
