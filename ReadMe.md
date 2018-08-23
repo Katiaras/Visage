@@ -4,6 +4,9 @@ Visage is a chatting application, not that different from Facebook.
 I've taken an interest in Asp.Net Core and Angular. Thus, decided to 
 polish my skills in these technologies by creating this app. 
 
+## Demo preview on Youtube
+* [Visage](https://youtu.be/Ww_efax9SNA) - Extended user registrations
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
