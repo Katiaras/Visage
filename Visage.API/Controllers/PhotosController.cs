@@ -106,7 +106,7 @@ namespace Visage.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Could not add the photo");
+                return BadRequest("Error: " + ex);
             }
 
 
@@ -200,7 +200,7 @@ namespace Visage.API.Controllers
             catch (Exception ex)
             {
 
-                return BadRequest("Failed to delete the photo");
+                return BadRequest("Error: "+ex);
             }
         }
     }
