@@ -12,6 +12,8 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { MemberEditResolver } from './resolvers/member-edit.resolver';
 import { PreventUnsavedChanges } from './guards/prevent-unsaved-changes.guards';
 import { ProfileResolver } from './resolvers/profile.resolver';
+import { LikedMemberListComponent } from './members/liked-member-list/liked-member-list.component';
+import { LikedMemberListResolver } from './resolvers/liked-member-list.resolver';
 
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
@@ -26,7 +28,8 @@ export const appRoutes: Routes = [
              resolve: {user: MemberEditResolver}, canDeactivate: [PreventUnsavedChanges]},
             { path: 'messages', component: MessagesComponent},
             { path: 'suggested', component: SuggestedListComponent},
-            { path: 'profile', component: ProfileComponent, resolve: {user: ProfileResolver}}
+            { path: 'profile', component: ProfileComponent, resolve: {user: ProfileResolver}},
+            { path: 'liked', component: LikedMemberListComponent, resolve: {users: LikedMemberListResolver}}
         ]
     },
     { path: '**', redirectTo: '', pathMatch: 'full'},

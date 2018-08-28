@@ -14,7 +14,7 @@ export class MemberListComponent implements OnInit {
   users: User[];
   pagination: Pagination;
   user: User = JSON.parse(localStorage.getItem('user'));
-  genderList = [{value: '', display: 'All'}, {value: 'male', display: 'Males'}, {value: 'female', display: 'Females'}];
+  genderList = [{ value: '', display: 'All' }, { value: 'male', display: 'Males' }, { value: 'female', display: 'Females' }];
   userParams: any = {};
 
 
@@ -46,10 +46,10 @@ export class MemberListComponent implements OnInit {
   loadUsers() {
     this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
       .subscribe((res: PaginatedResult<User[]>) => {
-      this.users = res.result;
-      this.pagination = res.pagination;
-    }, error => {
-      this.alertify.error(error);
-    });
+        this.users = res.result;
+        this.pagination = res.pagination;
+      }, error => {
+        this.alertify.error(error);
+      });
   }
 }

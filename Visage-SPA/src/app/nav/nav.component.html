@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="active">
-      <img src="assets/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="Visage Inc."> Visage
+      <img src="assets/images/welcome.gif" width="30" height="30" class="d-inline-block align-top" alt="Visage Inc."> Visage
     </a>
 
     <ul class="navbar-nav mr-auto" *ngIf="loggedIn()">
@@ -10,6 +10,9 @@
       </li>
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" [routerLink]="['/friends']">Friends</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/liked']">Likemania</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" [routerLink]="['/suggested']">Suggested</a>
