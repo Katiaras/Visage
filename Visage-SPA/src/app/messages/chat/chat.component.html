@@ -1,0 +1,12 @@
+<form #chatForm="ngForm" class="mesgs" (ngSubmit)="sendMessage()">
+
+  <div  class="msg_history" #messageHistory>
+    <app-message *ngFor="let message of messages" [IsCurrentUser]="message.recipientId == recipientId" [message]="message" ></app-message>
+  </div>
+  <div class="type_msg">
+    <div class="input_msg_write">
+      <input type="text" class="write_msg"  autocomplete="off" [(ngModel)]="content" required name="content" placeholder="Type a message">
+      <button [disabled]="chatForm.invalid" class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</form>

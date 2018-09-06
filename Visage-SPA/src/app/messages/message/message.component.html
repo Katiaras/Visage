@@ -1,0 +1,13 @@
+<div *ngIf="!IsCurrentUser" class="incoming_msg">
+  <div class="incoming_msg_img"> <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}"> </div>
+  <div class="received_msg">
+    <div class="received_withd_msg">
+      <p>{{message.content}}</p>
+      <span class="time_date"> {{message.messageSent | date:'short'}}</span></div>
+  </div>
+</div>
+<div *ngIf="IsCurrentUser" class="outgoing_msg">
+  <div class="sent_msg">
+    <p>{{message.content}}</p>
+    <span class="time_date"> {{message.messageSent | date:'short'}}</span> </div>
+</div>

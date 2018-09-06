@@ -5,6 +5,7 @@ import { Observable } from '../../../node_modules/rxjs';
 import { User } from '../models/user';
 import { PaginatedResult } from '../models/pagination';
 import { map } from '../../../node_modules/rxjs/operators';
+import { Message } from '../models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -66,5 +67,45 @@ export class UserService {
 
   sendLike(userId: number, recipientId: number) {
     return this.http.post(this.baseUrl + 'users/' + userId + '/like/' + recipientId, {});
+  }
+
+  getMessages(userId: number, page?, itemsPerPage?, messagesContainer?) {
+    const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+
+    let params = new HttpParams();
+
+    params = params.append('MessageContainer', messagesContainer);
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + userId + '/messages', { observe: 'response', params: params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') !== null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+
+          return paginatedResult;
+        })
+      );
+  }
+
+  getMessageThread(userId: number, recipientId: number): Observable<Message[]> {
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + userId + '/messages/thread/' + recipientId);
+  }
+
+  createMessage(userId: number, recipientId: number, content: string) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/messages', {recipientId: recipientId, content: content});
+  }
+
+  deleteMessage(userId: number, messageId: number) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + messageId, {});
+  }
+
+  markMessagesAsRead(userId: number, senderId: number) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + senderId + '/read', {});
   }
 }
