@@ -1,7 +1,7 @@
 # Visage
 
 Visage is a chatting application, not that different from Facebook. 
-I've taken an interest in Asp.Net Core and Angular. Thus, decided to 
+I've taken an interest in Asp.Net Core, Azure, and Angular. Thus, decided to 
 polish my skills in these technologies by creating this app. 
 
 ## Demo preview on Youtube
@@ -76,7 +76,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Versioning
 
-We use Angular6 and ASP.NET Core 2.1
+We use Angular 6 and ASP.NET Core 2.1
 
 ## Authors
 
