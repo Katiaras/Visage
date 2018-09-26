@@ -9,14 +9,15 @@ using Visage.API.Data;
 namespace Visage.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20180903123502_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180926122415_mysqliInitial")]
+    partial class mysqliInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Visage.API.Models.Like", b =>
                 {
