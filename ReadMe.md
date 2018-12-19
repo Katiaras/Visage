@@ -5,7 +5,8 @@ I've taken an interest in Asp.Net Core, Azure, and Angular. Thus, decided to
 polish my skills in these technologies by creating this app. 
 
 ## Demo preview on Youtube
-* [Visage](https://youtu.be/JjYYC4W_2O0) - Added liking functionality (Newest)
+* [Visage](https://youtu.be/YhYXwGPiTfI) - Added messaging functionality (Newest)
+* [Visage](https://youtu.be/JjYYC4W_2O0) - Added liking functionality
 * [Visage](https://youtu.be/Ww_efax9SNA) - Extended user registrations
 
 ## Getting Started
